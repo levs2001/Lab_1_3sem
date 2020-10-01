@@ -8,7 +8,25 @@ typedef struct myList{
   char patron[isize];
 }myList;
 
-myList* InitList(void);
+typedef struct {
+	char surname[20];
+	char name[20];
+	char patron[20];
+}SNP;
+
+enum SAME_E {
+	SAME,
+	NSAME
+};
+
+enum SNP_E {
+	SURNAME,
+	NAME,
+	PATRON
+};
+
+myList* InitList(char* surname, char* name, char* patron);
 myList* AddMan(myList* next, myList* pMan, char* surname, char* name, char* patron);
 void EnterSNP(myList* man, char* surname, char* name, char* patron);
-myList* Add2List(myList* start, char* surname, char* name, char* patron);
+myList* Add2List(myList** start, SNP snp);
+enum SAME_E FindPosForMan(myList** start, SNP snp, myList** pMan, myList** nMan, enum SNP_E snp_pos);

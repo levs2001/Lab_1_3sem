@@ -4,75 +4,139 @@
 #include <string.h>
 #include <stdlib.h>
 
-myList* InitList(void) {
-  myList* nMan = (myList*)malloc(sizeof(myList));
 
-  nMan->next = NULL;
-  return nMan;
+//Saskov IUlii Petrovich
+//Saskov Karl Ulebovich
+//Saskov IUstinian Adolfovich
+//Saskov Velorii Germannovich
+//Saskov Fedor Vladlenovich
+//Saskov Ilia Georgievich
+
+
+myList* InitList(char* surname, char* name, char* patron) {
+	myList* nMan = (myList*)malloc(sizeof(myList));
+	EnterSNP(nMan, surname, name, patron);
+	nMan->next = NULL;
+	return nMan;
+}
+
+void DeleteList(myList* start) {
+	myList* prevEl = start;
+	
+	myList* curEl = start->next;
+	free(prevEl);
+	prevEl = curEl;
+
+	while (prevEl->next != NULL) {
+		curEl = prevEl->next;
+		free(prevEl);
+		prevEl = curEl;
+	}
+}
+
+enum SAME_E FindPosForMan(myList** start, SNP snp, myList** pMan, myList** nMan, enum SNP_E snp_pos) {
+	myList* OfList = *start;
+	*nMan = NULL;
+	*pMan = NULL;
+	char word[isize];
+	char word2compare[isize];
+	int pointer = 0;
+	
+	switch (snp_pos) {
+	case SURNAME:
+		strcpy(word2compare, snp.surname);
+		break;
+	case NAME:
+		strcpy(word2compare, snp.name);
+		break;
+	case PATRON:
+		strcpy(word2compare, snp.patron);
+		break;
+	}
+
+	do {
+
+		switch (snp_pos) {
+		case SURNAME:
+			strcpy(word, OfList->surname);
+			break;
+		case NAME:
+			strcpy(word, OfList->name);
+			break;
+		case PATRON:
+			strcpy(word, OfList->patron);
+			break;
+		}
+
+		for (pointer = 0; pointer < isize && pointer < strlen(word2compare) && pointer < strlen(word); pointer++) {
+			if (word2compare[pointer] != word[pointer])
+				break;
+		}
+
+		if (word2compare[pointer] < word[pointer]) {
+			*nMan = OfList;
+			break;
+		}
+		else if (word2compare[pointer] > word[pointer]) {
+			if (OfList->next == NULL) {
+				*nMan = OfList->next;
+				*pMan = OfList;
+				break;
+			}
+			*pMan = OfList;
+			OfList = OfList->next;
+		}
+		else {
+			if (snp_pos != PATRON) {
+				return SAME;
+			}
+			else {
+				return NSAME;
+				*nMan = OfList;
+			}
+		}
+
+	} while (OfList != NULL);
+
+	return NSAME;
 }
 
 myList* AddMan(myList* next, myList* pMan, char* surname, char* name, char* patron) {
-  myList* nMan = (myList*)malloc(sizeof(myList));
-  nMan->next = next;
-  pMan->next = nMan;
-  EnterSNP(nMan, surname, name, patron);
+	myList* nMan = (myList*)malloc(sizeof(myList));
+	nMan->next = next;
+	if (pMan != NULL)
+		pMan->next = nMan;
+	EnterSNP(nMan, surname, name, patron);
 
-  return nMan;
+	return nMan;
 }
 
 void EnterSNP(myList* man, char* surname, char* name, char* patron) {
-  strcpy(man->surname, surname);
-  strcpy(man->name, name);
-  strcpy(man->patron, patron);
+	strcpy(man->surname, surname);
+	strcpy(man->name, name);
+	strcpy(man->patron, patron);
 }
 
-myList* Add2List(myList* start, char* surname, char* name, char* patron) {
-  myList* OfList = start;
-  myList* nMan = NULL;
-  myList* pMan = NULL;
-  int pointer = 0;
+myList* Add2List(myList** start, SNP snp) {
+	myList* OfList = *start;
+	myList* nMan = NULL;
+	myList* pMan = NULL;
+	int pointer = 0;
+	enum SAME_E fSNM_same = SAME;
+	enum SNP_E snp_pos = SURNAME;
+	
+	do {
+		fSNM_same = FindPosForMan(start, snp, &pMan, &nMan, snp_pos);
 
-  //Здесь надо по очереди сравнивать каждую букву фамилии, если совпадают, то каждую букву имени и т.д.
-  OfList = start;
+		if (fSNM_same != SAME || (snp_pos == PATRON)) {
+			nMan = AddMan(nMan, pMan, snp.surname, snp.name, snp.patron);
+			if (pMan == NULL)
+				*start = nMan;
+			snp_pos = -1;
+		}
+		snp_pos++;
+	} while (fSNM_same != NSAME);
+	
 
-  do {
-
-    for (pointer = 0; pointer < isize; pointer++) {
-      if (surname[pointer] != OfList->surname[pointer])
-        break;
-    }
-
-    if (surname[pointer] < OfList->surname[pointer]) {
-      nMan = AddMan(OfList, pMan, surname, name, patron);
-      break;
-    }
-    else if (surname[pointer] > OfList->surname[pointer]) {
-      if (OfList->next != NULL) {
-        pMan->next = OfList;
-        OfList = OfList->next;
-      }
-      else {
-        nMan = AddMan(NULL, pMan, surname, name, patron);
-      }
-    }
-    else {
-      //Бежим по имени и отчеству уже раз фамилии полностью совпали
-    }
-  } while (OfList->next != NULL);
-
-  //if (Oflist == )
-    /*while (strcmp(OfList, surname))
-      OfList = OfList->next;
-
-    if (OfList != Last) {
-
-    }
-
-    nMan = (myList*)malloc(sizeof(myList));
-    nMan->next = OfList;
-    EnterSNP(nMan, surname, name, patron);
-  */
-
-
-  return nMan;
+	return nMan;
 }

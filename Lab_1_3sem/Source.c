@@ -3,42 +3,54 @@
 #include "listInit.h"
 #include<stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-typedef struct {
-  char surname[20];
-  char name[20];
-  char patron[20];
-}SNP;
+
 
 //static myList* Last;
 
 void PrintList(myList *man)
 {
-  while (man->next != NULL)
+  while (man != NULL)
   {
-    printf("%s\n", man->surname);
+    printf("%s %s %s\n", man->surname, man->name, man->patron);
     man = man->next;
   }
 }
 
 int main(void) {
   myList* start = NULL;
+  myList* nMan = NULL;
   FILE* file = NULL;
+  SNP snp;
   char buf[20];
   char* word;
-  file = fopen("manList.txt", "r");
+  file = fopen("D:\\Programms\\ForLab1_3sem\\List.txt", "r");
 
-  if (file == NULL)
-    printf("The file manList wasn't open");
-  start = InitList();
-  fscanf(file, "%s", buf);
+  if (file == NULL) {
+      printf("The file manList wasn't open");
+      return 0;
+  }
+
+  //ВВодим первого в список
+  fscanf(file, "%s", snp.surname);
+  fscanf(file, "%s", snp.name);
+  fscanf(file, "%s", snp.patron);
+  
+  start = InitList(snp.surname, snp.name, snp.patron);
+  ////
+  
+  
   while (!feof(file)) {
-    word = (char*)malloc(strlen(buf)+1);
-    strcpy(word, buf);
-    Add2List(start, word, "test", "test");
-    fscanf(file, "%s", buf);
+    fscanf(file, "%s", snp.surname);
+    fscanf(file, "%s", snp.name);
+    fscanf(file, "%s", snp.patron);
+    nMan = Add2List(&start, snp);
   }
   
+ /* nMan->next = NULL;*/
   PrintList(start);
+  fclose(file);
   return 0;
+  ////Освобождать память надо! И файл закрывать
 }
