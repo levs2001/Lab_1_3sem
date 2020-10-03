@@ -5,13 +5,6 @@
 #include <stdlib.h>
 
 
-//Saskov IUlii Petrovich
-//Saskov Karl Ulebovich
-//Saskov IUstinian Adolfovich
-//Saskov Velorii Germannovich
-//Saskov Fedor Vladlenovich
-//Saskov Ilia Georgievich
-
 
 myList* InitList(char* surname, char* name, char* patron) {
 	myList* nMan = (myList*)malloc(sizeof(myList));
@@ -20,6 +13,7 @@ myList* InitList(char* surname, char* name, char* patron) {
 	return nMan;
 }
 
+
 void DeleteList(myList* start) {
 	myList* prevEl = start;
 	
@@ -27,12 +21,13 @@ void DeleteList(myList* start) {
 	free(prevEl);
 	prevEl = curEl;
 
-	while (prevEl->next != NULL) {
+	while (prevEl != NULL) {
 		curEl = prevEl->next;
 		free(prevEl);
 		prevEl = curEl;
 	}
 }
+
 
 enum SAME_E FindPosForMan(myList** start, SNP snp, myList** pMan, myList** nMan, enum SNP_E snp_pos) {
 	myList* OfList = *start;
@@ -101,8 +96,12 @@ enum SAME_E FindPosForMan(myList** start, SNP snp, myList** pMan, myList** nMan,
 	return NSAME;
 }
 
+
 myList* AddMan(myList* next, myList* pMan, char* surname, char* name, char* patron) {
 	myList* nMan = (myList*)malloc(sizeof(myList));
+	if (nMan == NULL)
+		return NULL;
+
 	nMan->next = next;
 	if (pMan != NULL)
 		pMan->next = nMan;
@@ -111,11 +110,13 @@ myList* AddMan(myList* next, myList* pMan, char* surname, char* name, char* patr
 	return nMan;
 }
 
+
 void EnterSNP(myList* man, char* surname, char* name, char* patron) {
 	strcpy(man->surname, surname);
 	strcpy(man->name, name);
 	strcpy(man->patron, patron);
 }
+
 
 myList* Add2List(myList** start, SNP snp) {
 	myList* OfList = *start;
@@ -132,9 +133,21 @@ myList* Add2List(myList** start, SNP snp) {
 			nMan = AddMan(nMan, pMan, snp.surname, snp.name, snp.patron);
 			if (pMan == NULL)
 				*start = nMan;
-			snp_pos = -1;
+			snp_pos = BETW;
 		}
-		snp_pos++;
+
+		switch (snp_pos) {
+		case BETW:
+			snp_pos = SURNAME;
+			break;
+		case SURNAME:
+			snp_pos = NAME;
+			break;
+		case NAME:
+			snp_pos = PATRON;
+			break;
+		}
+		//snp_pos++;
 	} while (fSNM_same != NSAME);
 	
 

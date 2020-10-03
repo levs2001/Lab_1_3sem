@@ -6,9 +6,6 @@
 #include <stdlib.h>
 
 
-
-//static myList* Last;
-
 void PrintList(myList *man)
 {
   while (man != NULL)
@@ -26,7 +23,7 @@ int main(void) {
   char buf[20];
   char* word;
   file = fopen("D:\\Programms\\ForLab1_3sem\\List.txt", "r");
-
+  
   if (file == NULL) {
       printf("The file manList wasn't open");
       return 0;
@@ -48,9 +45,8 @@ int main(void) {
     nMan = Add2List(&start, snp);
   }
   
- /* nMan->next = NULL;*/
   PrintList(start);
+  DeleteList(start);
   fclose(file);
   return 0;
-  ////Освобождать память надо! И файл закрывать
 }

@@ -20,12 +20,14 @@ enum SAME_E {
 };
 
 enum SNP_E {
+	BETW,
 	SURNAME,
 	NAME,
 	PATRON
 };
 
 myList* InitList(char* surname, char* name, char* patron);
+void DeleteList(myList* start);
 myList* AddMan(myList* next, myList* pMan, char* surname, char* name, char* patron);
 void EnterSNP(myList* man, char* surname, char* name, char* patron);
 myList* Add2List(myList** start, SNP snp);
