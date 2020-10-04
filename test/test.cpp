@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "../Lab_1_3sem/listInit.c"
 
-TEST(FuncTest, InitListTest) {
+TEST(ListInitTest, InitListTest) {
 	myList* man = InitList("tSurname", "tName", "tPatron");
 	ASSERT_TRUE(man != NULL);
 	EXPECT_STREQ("tSurname", man->surname);
@@ -11,7 +11,7 @@ TEST(FuncTest, InitListTest) {
 	/*EXPECT_TRUE(true);*/
 }
 
-TEST(FuncTest, EnterSNPTest) {
+TEST(ListInitTest, EnterSNPTest) {
 	myList* man = InitList("", "", "");
 	EnterSNP(man, "tSurname", "tName", "tPatron");
 	EXPECT_STREQ("tSurname", man->surname);
@@ -21,7 +21,7 @@ TEST(FuncTest, EnterSNPTest) {
 }
 
 
-TEST(FuncTest, FindPosForManWith1ManTest) {
+TEST(ListInitTest, FindPosForManWith1ManTest) {
 	enum SNP_E snp_pos = SURNAME;
 	myList* nMan = NULL;
 	myList* pMan = NULL;
@@ -39,7 +39,7 @@ TEST(FuncTest, FindPosForManWith1ManTest) {
 }
 
 
-TEST(FuncTest, AddManTest) {
+TEST(ListInitTest, AddManTest) {
 	enum SNP_E snp_pos = SURNAME;
 	myList *nextMan = NULL, *newMan = NULL;
 	myList* pMan = NULL;
@@ -63,7 +63,7 @@ TEST(FuncTest, AddManTest) {
 }
 
 
-TEST(FuncTest, Add2ListTestNoChangeOrder) {
+TEST(ListInitTest, Add2ListTestNoChangeOrder) {
 	myList* start = NULL;
 	myList* man1 = NULL, *man2 = NULL;
 	SNP snp;
@@ -89,7 +89,7 @@ TEST(FuncTest, Add2ListTestNoChangeOrder) {
 		
 }
 
-TEST(FuncTest, Add2ListTestWithChangeOrder) {
+TEST(ListInitTest, Add2ListTestWithChangeOrder) {
 	myList* start = NULL;
 	myList* man1 = NULL, * man2 = NULL;
 	SNP snp;

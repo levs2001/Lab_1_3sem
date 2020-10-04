@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include "ListFinding.h"
 
 void PrintList(myList* man)
 {
@@ -16,11 +16,11 @@ void PrintList(myList* man)
 }
 
 int main(int argc, char* argv[]) {
-	myList* start = NULL;
-	myList* nMan = NULL;
+	myList *start = NULL, *nMan = NULL;
+	myList** searchList = NULL;
 	FILE* file = NULL;
-	SNP snp;
-	char buf[20], filename[50];
+	SNP snp, searchSNP;
+	char buf[20], filename[50], search[40];
 	char* word;
 
 	switch (argc) {
@@ -42,6 +42,8 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	}
+
+
 	file = fopen(filename, "r");
 
 	if (file == NULL) {
@@ -66,6 +68,18 @@ int main(int argc, char* argv[]) {
 	}
 
 	PrintList(start);
+
+	printf("\nEnter search params...\n");
+	/*scanf("%s %s %s", snp.surname, snp.name, snp.patron);*/
+	
+	//fgetsДва раза потому, что он читает \n в начале
+	fgets(search, 40, stdin);
+	fgets(search, 40, stdin);
+	StrSearchAnalys(&searchSNP, search);
+	searchList = SearchInList(start, searchSNP);
+	PrintSearch(searchList);
+	ClearSearch(searchList);
+
 	DeleteList(start);
 	fclose(file);
 	return 0;

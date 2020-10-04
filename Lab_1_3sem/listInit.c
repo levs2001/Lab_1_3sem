@@ -151,3 +151,4 @@ myList* Add2List(myList** start, SNP snp) {
 
 	return nMan;
 }
+
