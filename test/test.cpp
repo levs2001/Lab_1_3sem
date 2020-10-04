@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "../Lab_1_3sem/listInit.c"
+#include "../Lab_1_3sem/ListFinding.c"
 
 TEST(ListInitTest, InitListTest) {
 	myList* man = InitList("tSurname", "tName", "tPatron");
@@ -115,3 +116,21 @@ TEST(ListInitTest, Add2ListTestWithChangeOrder) {
 
 }
 
+
+TEST(SearchListTest, StrSearchAnalysTest) {
+	SNP searchSNP;
+	char search[40];
+	
+	strcpy(search, "aa bb cc");
+	StrSearchAnalys(&searchSNP, search);
+		
+	EXPECT_TRUE(searchSNP.surname[0] == 'a');
+	EXPECT_TRUE(searchSNP.surname[1] == 'a');
+	
+	EXPECT_TRUE(searchSNP.name[0] == 'b');
+	EXPECT_TRUE(searchSNP.name[1] == 'b');
+	
+	EXPECT_TRUE(searchSNP.patron[0] == 'c');
+	EXPECT_TRUE(searchSNP.patron[1] == 'c');
+	
+}

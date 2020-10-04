@@ -27,13 +27,13 @@ void StrSearchAnalys(SNP* searchSNP, char* search) {
 		else {
 			switch (i) {
 			case 0:
-				sscanf(search, "%s", searchSNP->surname);
+				sscanf(search + pointer, "%s", searchSNP->surname);
 				break;
 			case 1:
-				sscanf(search, "%s", searchSNP->name);
+				sscanf(search + pointer, "%s", searchSNP->name);
 				break;
 			case 2:
-				sscanf(search, "%s", searchSNP->patron);
+				sscanf(search + pointer, "%s", searchSNP->patron);
 				break;
 			}
 			while (search[pointer] != ' ')
@@ -72,7 +72,7 @@ int SearchCompare(myList* man, SNP searchSNP) {
 }
 
 
-myList* SearchInList(myList* start, SNP searchSNP) {
+myList** SearchInList(myList* start, SNP searchSNP) {
 	int memSize = 10;
 	myList** searchList = (myList**)malloc(sizeof(myList) * memSize);
 	myList* man = start;
