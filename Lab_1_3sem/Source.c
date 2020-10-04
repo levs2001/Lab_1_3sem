@@ -59,6 +59,13 @@ int main(int argc, char* argv[]) {
 	start = InitList(snp.surname, snp.name, snp.patron);
 	////
 
+	///////
+	strcpy(snp.surname, "dd");
+	strcpy(snp.name, "ee");
+	strcpy(snp.patron, "ff");
+	Add2List(&start, snp);
+	Add2List(&start, snp);
+	//////
 
 	while (!feof(file)) {
 		fscanf(file, "%s", snp.surname);

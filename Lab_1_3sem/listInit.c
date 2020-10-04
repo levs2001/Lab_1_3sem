@@ -84,8 +84,8 @@ enum SAME_E FindPosForMan(myList** start, SNP snp, myList** pMan, myList** nMan,
 				return SAME;
 			}
 			else {
-				return NSAME;
 				*nMan = OfList;
+				return NSAME;
 			}
 		}
 
